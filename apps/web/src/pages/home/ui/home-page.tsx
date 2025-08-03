@@ -1,4 +1,5 @@
 import { orpc } from '@/shared/api'
+import { Button } from '@/shared/ui/button'
 import { useQuery } from '@tanstack/react-query'
 
 export const HomePage: React.FC = () => {
@@ -6,9 +7,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>This is the main entry point of our application.</p>
-      <p>Explore the features and functionalities we offer!</p>
+      <Button>Hello world</Button>
       <div>Server status: {data?.status ?? 'N/A'}</div>
     </div>
   )
