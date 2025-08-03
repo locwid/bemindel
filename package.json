@@ -1,0 +1,25 @@
+{
+  "name": "@bemindel/root",
+  "version": "0.0.0",
+  "author": {
+    "name": "locwid",
+    "url": "https://github.com/locwid"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/locwid/bemindel.git"
+  },
+  "description": "Project management system",
+  "license": "MIT",
+  "scripts": {
+    "dev": "bun --elide-lines=0 --filter '*' dev",
+    "format": "prettier --write ."
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14"
+  }
+}
