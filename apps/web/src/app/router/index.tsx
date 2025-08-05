@@ -3,21 +3,30 @@ import { BrowserRouter } from 'react-router'
 
 import { HomePage } from '@/pages/home'
 import { LoginPage } from '@/pages/login-page'
-import { AuthOnly } from '@/shared/auth'
+import { SetupPage } from '@/pages/setup-page'
+
+import { ServerSetupGuard } from '@/app/guards/server-setup-guard'
+import { AuthOnlyGuard } from '@/app/guards/auth-only-guard'
 
 export const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route
-          path='/login'
-          element={<LoginPage />}
+          path='/setup'
+          element={<SetupPage />}
         />
-        <Route element={<AuthOnly redirectTo='/login' />}>
+        <Route element={<ServerSetupGuard />}>
           <Route
-            path='/'
-            element={<HomePage />}
+            path='/login'
+            element={<LoginPage />}
           />
+          <Route element={<AuthOnlyGuard redirectTo='/login' />}>
+            <Route
+              path='/'
+              element={<HomePage />}
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
