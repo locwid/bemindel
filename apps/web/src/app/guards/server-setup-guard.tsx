@@ -1,19 +1,12 @@
 import { orpc } from '@/shared/api'
+import { useHealthCheck } from '@/shared/api/health-check'
 import { useQuery } from '@tanstack/react-query'
 import { Navigate, Outlet } from 'react-router'
 
 export const ServerSetupGuard: React.FC = () => {
-  const { data, error, isPending } = useQuery(orpc.healthCheck.queryOptions())
+  const { setupRequired } = useHealthCheck()
 
-  if (isPending) {
-    return <>Loading ...</>
-  }
-
-  if (error) {
-    return <>Error: {error.message}</>
-  }
-
-  if (data?.setupRequired) {
+  if (setupRequired) {
     return <Navigate to='/setup' />
   }
 

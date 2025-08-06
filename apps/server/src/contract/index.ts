@@ -1,5 +1,11 @@
 import { auth } from '@/app/auth'
-import { ContractRouterClient, oc, ORPCError } from '@orpc/contract'
+import {
+  ContractRouterClient,
+  InferContractRouterInputs,
+  InferContractRouterOutputs,
+  oc,
+  ORPCError,
+} from '@orpc/contract'
 import { implement } from '@orpc/server'
 import { z } from 'zod'
 
@@ -48,3 +54,5 @@ export const authMiddleware = base.middleware(
 )
 
 export type Contract = ContractRouterClient<typeof contract>
+export type ContractInput = InferContractRouterInputs<typeof contract>
+export type ContractOutput = InferContractRouterOutputs<typeof contract>

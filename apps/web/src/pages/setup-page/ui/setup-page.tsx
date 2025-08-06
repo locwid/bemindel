@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import {
@@ -21,7 +21,8 @@ import {
   FormMessage,
 } from '@/shared/ui/form'
 import { useMutation } from '@tanstack/react-query'
-import { orpc } from '@/shared/api'
+import { orpc, queryClient } from '@/shared/api'
+import { useHealthCheck } from '@/shared/api/health-check'
 
 const setupSchema = z.object({
   postgresUrl: z
@@ -43,7 +44,9 @@ export const SetupPage: React.FC = () => {
   const setupMutation = useMutation(
     orpc.setupServer.mutationOptions({
       onSuccess: () => {
-        navigate('/')
+        queryClient.invalidateQueries({
+          queryKey: orpc.healthCheck.key(),
+        })
       },
       onError: (err: any) => {
         setError(err?.message || 'An unexpected error occurred during setup')
@@ -61,6 +64,12 @@ export const SetupPage: React.FC = () => {
   const onSubmit = async (values: SetupFormValues) => {
     setError(null)
     setupMutation.mutate(values)
+  }
+
+  const { setupRequired } = useHealthCheck()
+
+  if (!setupRequired) {
+    return <Navigate to='/' />
   }
 
   return (
