@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from '@/shared/ui/kit/form'
 import { cn } from '@/shared/ui/lib'
+import { useMutation } from '@tanstack/react-query'
 
 const loginSchema = z.object({
   email: z
@@ -42,8 +43,6 @@ interface PropsLoginForm {
 
 export const LoginForm: React.FC<PropsLoginForm> = ({ className }) => {
   const navigate = useNavigate()
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -53,29 +52,21 @@ export const LoginForm: React.FC<PropsLoginForm> = ({ className }) => {
     },
   })
 
-  const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true)
-    setError(null)
-
-    try {
+  const mutation = useMutation({
+    mutationFn: async ({ email, password }: LoginFormValues) => {
       const result = await authClient.signIn.email({
-        email: values.email,
-        password: values.password,
+        email,
+        password,
       })
-
-      if (result.error) {
-        setError(result.error.message || 'An error occurred during login')
-        return
-      }
-
+      return result
+    },
+    onSuccess: () => {
       navigate('/')
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred',
-      )
-    } finally {
-      setIsLoading(false)
-    }
+    },
+  })
+
+  const onSubmit = async (values: LoginFormValues) => {
+    mutation.mutate(values)
   }
 
   return (
@@ -131,18 +122,18 @@ export const LoginForm: React.FC<PropsLoginForm> = ({ className }) => {
               )}
             />
 
-            {error && (
+            {!!mutation.error && (
               <div className='text-destructive bg-destructive/10 rounded-md p-3 text-center text-sm'>
-                {error}
+                {mutation.error.message || 'An unexpected error occurred'}
               </div>
             )}
 
             <Button
               type='submit'
               className='w-full'
-              disabled={isLoading}
+              disabled={mutation.isPending}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {mutation.isPending ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
         </Form>
