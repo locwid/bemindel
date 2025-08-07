@@ -34,16 +34,18 @@ const routes: RouteDefinition[] = [
         children={<Outlet />}
       />
     ),
-    children: [{ path: '/login', element: <LoginPage /> }],
-  },
-  {
-    element: (
-      <AuthOnly
-        redirectTo='/login'
-        children={<Outlet />}
-      />
-    ),
-    children: [{ index: true, element: <HomePage /> }],
+    children: [
+      { path: '/login', element: <LoginPage /> },
+      {
+        element: (
+          <AuthOnly
+            redirectTo='/login'
+            children={<Outlet />}
+          />
+        ),
+        children: [{ index: true, element: <HomePage /> }],
+      },
+    ],
   },
 ]
 

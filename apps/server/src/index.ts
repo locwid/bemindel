@@ -3,45 +3,39 @@ import { orpc } from '@/app/orpc'
 import { cors } from 'hono/cors'
 import { env } from '@/app/env'
 import { auth } from '@/app/auth'
-import { runtimeConfig } from './app/runtimeConfig'
 import { db } from './db'
+import { HTTPException } from 'hono/http-exception'
+import { migrate } from 'drizzle-orm/bun-sql/migrator'
 
-const bootstrap = async () => {
-  const runtimeConfigState = await runtimeConfig.initialize()
-  if (!runtimeConfigState) {
-    return
-  }
-  const { postgresUrl } = runtimeConfigState
+await migrate(db, {
+  migrationsFolder: './migrations',
+})
 
-  await db.connect(postgresUrl)
-}
+const app = new Hono()
 
-const startServer = () => {
-  const app = new Hono()
-
-  app.use(
-    '*',
-    cors({
-      origin: env.CLIENT_URL,
-      allowHeaders: ['Content-Type', 'Authorization'],
-      allowMethods: ['POST', 'GET', 'OPTIONS'],
-      exposeHeaders: ['Content-Length'],
-      maxAge: 600,
-      credentials: true,
-    }),
-  )
-  app.use('/rpc/*', orpc('/rpc'))
-  app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw))
-
-  const server = Bun.serve({
-    fetch: app.fetch,
-    port: 3000,
+app.use(
+  '*',
+  cors({
+    origin: env.CLIENT_URL,
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
+  }),
+)
+app.use('/rpc/*', orpc('/rpc'))
+app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw))
+app.notFound((c) => {
+  c.status(404)
+  return c.json({
+    message: 'Not found',
   })
+})
 
-  console.log(`Server running at http://localhost:${server.port}`)
-}
+const server = Bun.serve({
+  fetch: app.fetch,
+  port: 3000,
+})
 
-;(async () => {
-  await bootstrap()
-  startServer()
-})()
+console.log(`Server running at http://localhost:${server.port}`)

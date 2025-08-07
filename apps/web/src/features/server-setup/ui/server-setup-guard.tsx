@@ -29,11 +29,11 @@ export const ServerSetupGuard: React.FC<
 
   if (isSuccess) {
     if (required) {
-      if (data.setupRequired) {
+      if (!data.setup) {
         return <Navigate to='/setup' />
       }
     } else {
-      if (!data.setupRequired) {
+      if (data.setup) {
         return <Navigate to={props.redirectTo} />
       }
     }

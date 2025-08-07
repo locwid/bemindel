@@ -54,11 +54,10 @@ export const LoginForm: React.FC<PropsLoginForm> = ({ className }) => {
 
   const mutation = useMutation({
     mutationFn: async ({ email, password }: LoginFormValues) => {
-      const result = await authClient.signIn.email({
+      await authClient.signIn.email({
         email,
         password,
       })
-      return result
     },
     onSuccess: () => {
       navigate('/')

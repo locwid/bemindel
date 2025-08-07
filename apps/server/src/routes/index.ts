@@ -1,22 +1,24 @@
-import { runtimeConfig } from '@/app/runtimeConfig'
+import { auth } from '@/app/auth'
 import { os } from '@/contract'
-import { db } from '@/db'
+import { db, tables } from '@/db'
 import { migrate } from 'drizzle-orm/bun-sql/migrator'
 
 export const router = os.router({
   healthCheck: os.healthCheck.handler(async () => {
+    const userCount = await db.$count(tables.users)
     return {
       server: true,
-      database: db.isDefined,
-      setupRequired: !runtimeConfig.isDefined,
+      setup: userCount > 0,
     }
   }),
   setupServer: os.setupServer.handler(async ({ input }) => {
     try {
-      await db.connect(input.postgresUrl)
-
-      const config = await runtimeConfig.set({
-        postgresUrl: input.postgresUrl,
+      const admin = await auth.api.signUpEmail({
+        body: {
+          name: input.username,
+          email: input.email,
+          password: input.password,
+        },
       })
 
       return {

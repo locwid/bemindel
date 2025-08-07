@@ -13,14 +13,15 @@ const contract = {
   healthCheck: oc.output(
     z.object({
       server: z.boolean(),
-      database: z.boolean(),
-      setupRequired: z.boolean(),
+      setup: z.boolean(),
     }),
   ),
   setupServer: oc
     .input(
       z.object({
-        postgresUrl: z.string(),
+        username: z.string(),
+        email: z.string().email(),
+        password: z.string(),
       }),
     )
     .output(

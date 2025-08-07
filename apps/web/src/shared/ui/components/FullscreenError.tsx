@@ -9,7 +9,7 @@ export const FullscreenError: React.FC<PropsFullscreenError> = ({ error }) => {
   const content =
     error instanceof Error
       ? error.message
-      : error || 'An unexpected error occurred'
+      : JSON.stringify(error, null, 2) || 'An unexpected error occurred'
 
   return (
     <div className='bg-background flex h-dvh w-full items-center justify-center'>
