@@ -1,17 +1,19 @@
-import { HealthCheckProvider } from './providers/health-check-provider'
-import { QueryProvider } from './providers/query-provider'
-import { ThemeProvider } from './providers/theme-provider'
-import { Router } from './router'
+import { ThemeProvider } from '@/shared/lib/theme'
+import { AppRoutes } from './routes'
+import './styles/main.css'
 import React from 'react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from '@/shared/api'
 
 export const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <QueryProvider>
-        <HealthCheckProvider>
-          <Router />
-        </HealthCheckProvider>
-      </QueryProvider>
+    <ThemeProvider
+      defaultTheme='dark'
+      storageKey='vite-ui-theme'
+    >
+      <QueryClientProvider client={queryClient}>
+        <AppRoutes />
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }
