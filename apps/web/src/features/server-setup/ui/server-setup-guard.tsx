@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import { useHealthCheck } from '../model/use-health-check'
 import { Navigate } from 'react-router'
+import { FullscreenError } from '@/shared/ui/components/FullscreenError'
+import { FullscreenLoading } from '@/shared/ui/components/FullscreenLoading'
 
 type PropsServerSetupGuard =
   | {
@@ -18,11 +20,11 @@ export const ServerSetupGuard: React.FC<
   const { data, isPending, isSuccess, isError, error } = useHealthCheck()
 
   if (isPending) {
-    return <>Loading...</>
+    return <FullscreenLoading />
   }
 
   if (isError) {
-    return <>Error: {error.message}</>
+    return <FullscreenError error={error} />
   }
 
   if (isSuccess) {

@@ -4,16 +4,22 @@ import './styles/main.css'
 import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/shared/api'
+import { ErrorBoundary } from 'react-error-boundary'
+import { FullscreenError } from '@/shared/ui/components/FullscreenError'
 
 export const App: React.FC = () => {
   return (
-    <ThemeProvider
-      defaultTheme='dark'
-      storageKey='vite-ui-theme'
+    <ErrorBoundary
+      fallbackRender={({ error }) => <FullscreenError error={error} />}
     >
-      <QueryClientProvider client={queryClient}>
-        <AppRoutes />
-      </QueryClientProvider>
-    </ThemeProvider>
+      <ThemeProvider
+        defaultTheme='dark'
+        storageKey='vite-ui-theme'
+      >
+        <QueryClientProvider client={queryClient}>
+          <AppRoutes />
+        </QueryClientProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }

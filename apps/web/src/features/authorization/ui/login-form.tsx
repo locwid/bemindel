@@ -4,15 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate } from 'react-router'
 import { authClient } from '@/shared/api'
-import { Button } from '@/shared/ui/button'
-import { Input } from '@/shared/ui/input'
+import { Button } from '@/shared/ui/kit/button'
+import { Input } from '@/shared/ui/kit/input'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/card'
+} from '@/shared/ui/kit/card'
 import {
   Form,
   FormControl,
@@ -20,8 +20,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/form'
-import { cn } from '@/shared/ui'
+} from '@/shared/ui/kit/form'
+import { cn } from '@/shared/ui/lib'
 
 const loginSchema = z.object({
   email: z

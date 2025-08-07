@@ -11,74 +11,56 @@ import { AuthOnly } from '@/features/authorization'
 type RouteDefinition = Omit<RouteProps, 'children'> &
   ({ index: true } | { index?: false; children?: RouteDefinition[] })
 
-const setupRoutes: RouteDefinition[] = [
+const routes: RouteDefinition[] = [
   {
-    path: '/setup',
-    element: <SetupPage />,
+    element: (
+      <ServerSetupGuard
+        required={false}
+        redirectTo='/'
+        children={<Outlet />}
+      />
+    ),
+    children: [
+      {
+        path: '/setup',
+        element: <SetupPage />,
+      },
+    ],
+  },
+  {
+    element: (
+      <ServerSetupGuard
+        required
+        children={<Outlet />}
+      />
+    ),
+    children: [{ path: '/login', element: <LoginPage /> }],
+  },
+  {
+    element: (
+      <AuthOnly
+        redirectTo='/login'
+        children={<Outlet />}
+      />
+    ),
+    children: [{ index: true, element: <HomePage /> }],
   },
 ]
 
-const publicRoutes: RouteDefinition[] = [
-  {
-    path: '/login',
-    element: <LoginPage />,
-    children: [],
-  },
-]
-
-const privateRoutes: RouteDefinition[] = [
-  {
-    index: true,
-    element: <HomePage />,
-  },
-]
-
-const spreadRoutes = (routes: RouteDefinition[]) => {
+const buildRoutes = (routes: RouteDefinition[]) => {
   return routes.map((props) => {
     if (props.index) {
       return <Route {...props} />
     }
     const { children, ...other } = props
-    return <Route {...other}>{children ? spreadRoutes(children) : null}</Route>
+    return <Route {...other}>{children ? buildRoutes(children) : null}</Route>
   })
 }
 
 export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          element={
-            <ServerSetupGuard
-              required={false}
-              redirectTo='/'
-              children={<Outlet />}
-            />
-          }
-        >
-          {spreadRoutes(setupRoutes)}
-        </Route>
-        <Route
-          element={
-            <ServerSetupGuard
-              required
-              children={<Outlet />}
-            />
-          }
-        >
-          {spreadRoutes(publicRoutes)}
-          <Route
-            element={
-              <AuthOnly
-                redirectTo='/login'
-                children={<Outlet />}
-              />
-            }
-          >
-            {spreadRoutes(privateRoutes)}
-          </Route>
-        </Route>
-      </Routes>
+      <Routes>{buildRoutes(routes)}</Routes>
     </BrowserRouter>
   )
 }

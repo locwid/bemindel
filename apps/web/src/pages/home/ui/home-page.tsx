@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/button'
+import { Button } from '@/shared/ui/kit/button'
 
 export const HomePage: React.FC = () => {
   return (
