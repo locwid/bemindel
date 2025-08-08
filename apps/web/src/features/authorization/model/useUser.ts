@@ -1,4 +1,4 @@
-import { useAuth } from './use-auth'
+import { useAuth } from './useAuth'
 
 export const useUser = () => {
   const { data } = useAuth()

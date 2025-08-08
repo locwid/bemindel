@@ -1,5 +1,5 @@
 import { LoginForm } from '@/features/authorization'
-import { AuthLoadingBox } from '@/features/authorization/ui/auth-loading-box'
+import { AuthLoadingBox } from '@/features/authorization'
 import { Navigate } from 'react-router'
 
 export const LoginPage: React.FC = () => {

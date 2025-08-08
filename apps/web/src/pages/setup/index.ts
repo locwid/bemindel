@@ -1,1 +1,1 @@
-export { SetupPage } from './ui/setup-page'
+export { SetupPage } from './ui/SetupPage'

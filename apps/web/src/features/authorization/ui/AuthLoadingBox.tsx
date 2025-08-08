@@ -1,5 +1,5 @@
 import { FullscreenLoading } from '@/shared/ui/components/FullscreenLoading'
-import { useAuth } from '../model/use-auth'
+import { useAuth } from '../model/useAuth'
 import { FullscreenError } from '@/shared/ui/components/FullscreenError'
 import type { User } from 'better-auth'
 

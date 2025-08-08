@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react'
 import { Navigate } from 'react-router'
-import { AuthLoadingBox } from './auth-loading-box'
+import { AuthLoadingBox } from './AuthLoadingBox'
 
 interface PropsAuthOnly {
   redirectTo: string

@@ -12,10 +12,7 @@ export const App: React.FC = () => {
     <ErrorBoundary
       fallbackRender={({ error }) => <FullscreenError error={error} />}
     >
-      <ThemeProvider
-        defaultTheme='dark'
-        storageKey='vite-ui-theme'
-      >
+      <ThemeProvider>
         <QueryClientProvider client={queryClient}>
           <AppRoutes />
         </QueryClientProvider>
