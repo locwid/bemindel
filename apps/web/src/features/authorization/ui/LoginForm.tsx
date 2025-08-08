@@ -4,15 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate } from 'react-router'
 import { authClient } from '@/shared/api'
-import { Button } from '@/shared/ui/kit/button'
-import { Input } from '@/shared/ui/kit/input'
+import { Button } from '@/shared/ui/kit/Button'
+import { Input } from '@/shared/ui/kit/Input'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/kit/card'
+} from '@/shared/ui/kit/Card'
 import {
   Form,
   FormControl,
@@ -20,7 +20,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/kit/form'
+} from '@/shared/ui/kit/Form'
 import { cn } from '@/shared/ui/lib'
 import { useMutation } from '@tanstack/react-query'
 

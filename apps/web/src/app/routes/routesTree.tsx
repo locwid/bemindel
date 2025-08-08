@@ -7,6 +7,7 @@ import { ServerSetupGuard } from '@/features/server-setup'
 import { SetupPage } from '@/pages/setup'
 import { LoginPage } from '@/pages/login'
 import { HomePage } from '@/pages/home'
+import { BaseLayout } from '../layouts/BaseLayout'
 
 export const routesTree: RouteDefinition[] = [
   {
@@ -35,10 +36,11 @@ export const routesTree: RouteDefinition[] = [
       { path: '/login', element: <LoginPage /> },
       {
         element: (
-          <AuthOnly
-            redirectTo='/login'
-            children={<Outlet />}
-          />
+          <AuthOnly redirectTo='/login'>
+            <BaseLayout>
+              <Outlet />
+            </BaseLayout>
+          </AuthOnly>
         ),
         children: [{ index: true, element: <HomePage /> }],
       },

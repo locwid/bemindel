@@ -2,15 +2,15 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Button } from '@/shared/ui/kit/button'
-import { Input } from '@/shared/ui/kit/input'
+import { Button } from '@/shared/ui/kit/Button'
+import { Input } from '@/shared/ui/kit/Input'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/kit/card'
+} from '@/shared/ui/kit/Card'
 import {
   Form,
   FormControl,
@@ -18,7 +18,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/kit/form'
+} from '@/shared/ui/kit/Form'
 import { useMutation } from '@tanstack/react-query'
 import { orpc, queryClient } from '@/shared/api'
 import { cn } from '@/shared/ui/lib'
