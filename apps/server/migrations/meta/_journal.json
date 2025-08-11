@@ -15,6 +15,20 @@
       "when": 1754651507491,
       "tag": "0001_complex_lorna_dane",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754919862011,
+      "tag": "0002_clean_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1754920063617,
+      "tag": "0003_dizzy_psylocke",
+      "breakpoints": true
     }
   ]
 }
