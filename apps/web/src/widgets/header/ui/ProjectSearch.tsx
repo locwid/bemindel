@@ -28,5 +28,3 @@ export const ProjectSearch: React.FC<PropsProjectSearch> = ({
     </div>
   )
 }
-
-export default ProjectSearch
