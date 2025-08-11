@@ -8,6 +8,7 @@ import {
 } from '@orpc/contract'
 import { implement } from '@orpc/server'
 import { z } from 'zod'
+import { projectContract } from './project'
 
 const contract = {
   healthCheck: oc.output(
@@ -29,6 +30,7 @@ const contract = {
         result: z.string(),
       }),
     ),
+  project: projectContract,
 }
 
 export const os = implement(contract)

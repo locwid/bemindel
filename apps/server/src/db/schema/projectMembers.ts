@@ -4,8 +4,12 @@ import { projects } from './projects'
 import { users } from './auth'
 
 export const projectMembers = pgTable('project_members', {
-  userId: text('user_id'),
-  projectId: text('project_id'),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  projectId: text('project_id')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
   permissions: text('permissions').array(),
 })
 

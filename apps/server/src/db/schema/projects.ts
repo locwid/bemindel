@@ -10,12 +10,16 @@ export const projects = pgTable('projects', {
   name: text('name').notNull(),
   description: text('description').notNull(),
   code: text('code').notNull().unique(),
-  creator_id: text('creator_id').references(() => users.id, {
+  creatorId: text('creator_id').references(() => users.id, {
     onDelete: 'cascade',
   }),
 })
 
-export const projectRelations = relations(projects, ({ many }) => ({
+export const projectRelations = relations(projects, ({ many, one }) => ({
   members: many(projectMembers),
   issues: many(issues),
+  creator: one(users, {
+    fields: [projects.creatorId],
+    references: [users.id],
+  }),
 }))

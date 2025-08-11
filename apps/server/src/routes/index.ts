@@ -1,32 +1,38 @@
 import { auth } from '@/app/auth'
-import { os } from '@/contract'
+import { base, os } from '@/contract'
 import { db, tables } from '@/db'
 import { migrate } from 'drizzle-orm/bun-sql/migrator'
+import { projectHandler } from './project'
+import { ORPCError } from '@orpc/contract'
 
-export const router = os.router({
+const isSetup = async () => {
+  const userCount = await db.$count(tables.users)
+  return userCount > 0
+}
+
+export const router = {
   healthCheck: os.healthCheck.handler(async () => {
-    const userCount = await db.$count(tables.users)
     return {
       server: true,
-      setup: userCount > 0,
+      setup: await isSetup(),
     }
   }),
   setupServer: os.setupServer.handler(async ({ input }) => {
-    try {
-      const admin = await auth.api.signUpEmail({
-        body: {
-          name: input.username,
-          email: input.email,
-          password: input.password,
-        },
-      })
+    if (await isSetup()) {
+      throw new ORPCError('BAD_REQUEST', { message: 'Server already setup' })
+    }
 
-      return {
-        result: 'Server setup complete',
-      }
-    } catch (e) {
-      console.log(e)
-      throw e
+    const admin = await auth.api.signUpEmail({
+      body: {
+        name: input.username,
+        email: input.email,
+        password: input.password,
+      },
+    })
+
+    return {
+      result: 'Server setup complete',
     }
   }),
-})
+  project: projectHandler,
+}
